@@ -35,7 +35,7 @@ export class TvChannel extends LitElement {
   render() {
     return html`
       <div class="wrapper">
-        <h3>${this.title}</h3>
+        <h3>"${this.title}"</h3>
         <h4>${this.presenter}</h4>
         <slot></slot>
       </div>  

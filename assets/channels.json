@@ -15,12 +15,12 @@
         "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
-        "title": "HAX: Wordpress Killer",
+        "title": "Slide 1",
         "description": "The future we need, not the future we have.",
         "metadata": {
           "source": "https://www.youtube.com/watch?v=9MT-BNuUCpM",
           "timecode": 0,
-          "author":"Bryan Ollendyke",
+          "author":"",
           "created": 1697033522,
           "updated": 1697034021
         }
@@ -32,12 +32,46 @@
         "slug": "this-is-water",
         "order": 0,
         "parent": null,
-        "title": "This, is water",
+        "title": "Slide 2",
         "description": "What is water?",
         "metadata": {
           "source": "https://www.youtube.com/watch?v=eC7xzavzEKY",
           "timecode": 45,
-          "author":"David Foster Wallace",
+          "author":"",
+          "created": 1697033522,
+          "updated": 1697034021
+        }
+      },
+      {
+        "id": "item-123-456-789",
+        "indent": 0,
+        "location": "hax-wp-killer.html",
+        "slug": "hax-wp-killer",
+        "order": 0,
+        "parent": null,
+        "title": "Slide 3",
+        "description": "The future we need, not the future we have.",
+        "metadata": {
+          "source": "https://www.youtube.com/watch?v=9MT-BNuUCpM",
+          "timecode": 0,
+          "author":"",
+          "created": 1697033522,
+          "updated": 1697034021
+        }
+      },
+      {
+        "id": "item-123-456-789",
+        "indent": 0,
+        "location": "hax-wp-killer.html",
+        "slug": "hax-wp-killer",
+        "order": 0,
+        "parent": null,
+        "title": "Slide 4",
+        "description": "The future we need, not the future we have.",
+        "metadata": {
+          "source": "https://www.youtube.com/watch?v=9MT-BNuUCpM",
+          "timecode": 0,
+          "author":"",
           "created": 1697033522,
           "updated": 1697034021
         }

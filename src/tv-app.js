@@ -3,6 +3,7 @@ import { LitElement, html, css } from 'lit';
 import '@shoelace-style/shoelace/dist/components/dialog/dialog.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import "./tv-channel.js";
+import "@lrnwebcomponents/video-player/video-player.js";
 
 export class TvApp extends LitElement {
   // defaults
@@ -29,7 +30,7 @@ export class TvApp extends LitElement {
     return [
       css`
       :host {
-        display: block;
+        display: grid;
         margin: 16px;
         padding: 16px;
       }
@@ -48,12 +49,15 @@ export class TvApp extends LitElement {
               presenter="${item.metadata.author}"
               @click="${this.itemClick}"
             >
+            
             </tv-channel>
           `
         )
       }
       <div>
         <!-- video -->
+        <video-player source="https://www.youtube.com/watch?v=LrS7dqokTLE" accent-color="orange" dark track="https://haxtheweb.org/files/HAXshort.vtt">
+</video-player>
         <!-- discord / chat - optional -->
       </div>
       <!-- dialog -->
