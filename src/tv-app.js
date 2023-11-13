@@ -56,7 +56,7 @@ export class TvApp extends LitElement {
       }
       <div>
         <!-- video -->
-        <video-player source="https://www.youtube.com/watch?v=LrS7dqokTLE" accent-color="orange" dark track="https://haxtheweb.org/files/HAXshort.vtt">
+        <video-player source="https://www.youtube.com/watch?v=DeKSmd-hjwo&ab_channel=FIFA" accent-color="orange" dark track="https://haxtheweb.org/files/HAXshort.vtt">
 </video-player>
         <!-- discord / chat - optional -->
       </div>
