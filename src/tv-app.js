@@ -23,6 +23,7 @@ export class TvApp extends LitElement {
       name: { type: String },
       source: { type: String },
       listings: { type: Array },
+      channels: { type: Object },
     };
   }
   // LitElement convention for applying styles JUST to our element
@@ -34,12 +35,61 @@ export class TvApp extends LitElement {
         margin: 16px;
         padding: 16px;
       }
+      .grid-container{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .left-item{
+        grid-column: 1;
+        margin-top: 50px;
+      }
+      .right-item{
+        grid-column: 2;
+        width: 200px;
+        margin-left: 110px;
+        margin-top: 15px;
+      }
+      .listing{
+        margin: 10px;
+      }
+      .slideclicker {
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        gap: 375px;
+        margin-bottom: 20px;
+      }
+      .previous-slide {
+        font-size: 20px;
+        background-color: #eeeeee;
+        width: 200px;
+        height: 50px;
+        padding-top: 22px;
+      }
+      .next-slide {
+        font-size: 20px;
+        background-color: #eeeeee;
+        width: 200px;
+        height: 50px;
+        padding-top: 22px;
+
+      }
       `
     ];
   }
   // LitElement rendering template of your element
   render() {
     return html`
+      <div class="grid-container">
+      <div class="grid-item">
+        <div class="left-item">
+          <video-player source="https://www.youtube.com/watch?v=K2csY1cMpfA&t=386s&ab_channel=MNcompsJR" accent-color="orange" dark track="https://haxtheweb.org/files/HAXshort.vtt"></video-player> 
+        </div>  
+        <tv-channel title="Neymar Highlights" presenter="">
+          Neymar is one of the greatest players of this generation!
+        </tv-channel>
+      </div>
+      <div class="right-item">
       <h2>${this.name}</h2>
       ${
         this.listings.map(
@@ -48,23 +98,24 @@ export class TvApp extends LitElement {
               title="${item.title}"
               presenter="${item.metadata.author}"
               @click="${this.itemClick}"
+              class="listing"
             >
-            
-            </tv-channel>
+            </tv-channel> 
           `
         )
       }
-      <div>
-        <!-- video -->
-        <video-player source="https://www.youtube.com/watch?v=DeKSmd-hjwo&ab_channel=FIFA" accent-color="orange" dark track="https://haxtheweb.org/files/HAXshort.vtt">
-</video-player>
-        <!-- discord / chat - optional -->
       </div>
-      <!-- dialog -->
-      <sl-dialog label="Dialog" class="dialog">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        <!-- dialog -->
+        <sl-dialog label="Dialog" class="dialog">
+          Count Number 
         <sl-button slot="footer" variant="primary" @click="${this.closeDialog}">Close</sl-button>
-      </sl-dialog>
+        </sl-dialog>
+    </div>
+    <div class="slideclicker">
+      <div class = "previous-slide"> Previous Slide</div>
+      <div class = "next-slide"> Next Slide</div>
+    </div>
+
     `;
   }
 
