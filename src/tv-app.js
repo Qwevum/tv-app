@@ -74,6 +74,7 @@ export class TvApp extends LitElement {
         padding-top: 22px;
 
       }
+    
       `
     ];
   }
@@ -107,7 +108,7 @@ export class TvApp extends LitElement {
       </div>
         <!-- dialog -->
         <sl-dialog label="Dialog" class="dialog">
-          Count Number 
+          Section 
         <sl-button slot="footer" variant="primary" @click="${this.closeDialog}">Close</sl-button>
         </sl-dialog>
     </div>
