@@ -24,6 +24,7 @@ export class TvApp extends LitElement {
       source: { type: String },
       listings: { type: Array },
       channels: { type: Object },
+      active: {type: String},
     };
   }
   // LitElement convention for applying styles JUST to our element
@@ -101,7 +102,7 @@ export class TvApp extends LitElement {
               @click="${this.itemClick}"
               class="listing"
             >
-            </tv-channel> 
+            </tv-channel>
           `
         )
       }
@@ -129,6 +130,7 @@ export class TvApp extends LitElement {
     console.log(e.target);
     const dialog = this.shadowRoot.querySelector('.dialog');
     dialog.show();
+    
   }
 
   // LitElement life cycle for when any property changes
