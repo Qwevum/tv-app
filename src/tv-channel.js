@@ -19,6 +19,8 @@ export class TvChannel extends LitElement {
       title: { type: String },
       video: { type: String },
       presenter: { type: String },
+      timecode: { type: Number },
+      slide: { type: Object },
     };
   }
   // LitElement convention for applying styles JUST to our element
@@ -39,6 +41,7 @@ export class TvChannel extends LitElement {
       <div class="wrapper">
         <h3>"${this.title}"</h3>
         <h3>${this.video}</h3>
+        <h3>${this.slide} </h3>
         <h4>${this.presenter}</h4>
         <slot></slot>
       </div>  

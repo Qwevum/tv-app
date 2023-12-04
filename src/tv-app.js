@@ -47,11 +47,17 @@ export class TvApp extends LitElement {
       .right-item{
         grid-column: 2;
         width: 200px;
+        font-size: .94rem;
         margin-left: 110px;
         margin-top: 15px;
+        text-align: center;
+        -webkit-overflow-scrolling: touch;
+        overflow-y: auto;
+        padding: 10px;
+        height: 512.41px;
       }
       .listing{
-        margin: 10px;
+        margin: 5px;
       }
       .slideclicker {
         display: flex;
@@ -85,10 +91,11 @@ export class TvApp extends LitElement {
       <div class="grid-container">
       <div class="grid-item">
         <div class="left-item">
-          <video-player source="https://www.youtube.com/watch?v=K2csY1cMpfA&t=386s&ab_channel=MNcompsJR" accent-color="orange" dark track="https://haxtheweb.org/files/HAXshort.vtt"></video-player> 
+          <video-player source="https://www.youtube.com/watch?v=Vw34wMAqWzc" 
+          accent-color="orange" dark track="https://haxtheweb.org/files/HAXshort.vtt"></video-player> 
         </div>  
-        <tv-channel title="Neymar Highlights" presenter="">
-          Neymar is one of the greatest players of this generation!
+        <tv-channel title="2018 World Cup Top 10 Goals" presenter="">
+          The ten best goals from the 2018 World Cup in Russia
         </tv-channel>
       </div>
       <div class="right-item">
@@ -101,6 +108,9 @@ export class TvApp extends LitElement {
               presenter="${item.metadata.author}"
               @click="${this.itemClick}"
               class="listing"
+              timecode="${item.metadata.timecode}"
+              slide="${item.metadata.source}"
+              
             >
             </tv-channel>
           `
@@ -128,9 +138,12 @@ export class TvApp extends LitElement {
 
   itemClick(e) {
     console.log(e.target);
-    const dialog = this.shadowRoot.querySelector('.dialog');
-    dialog.show();
-    
+    // this will give you the current time so that you can progress what's active based on it playing
+    this.shadowRoot.querySelector('video-player').shadowRoot.querySelector("a11y-media-player").media.currentTime
+    // this forces the video to play
+    this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').play()
+    // this forces the video to jump to this point in the video via SECONDS
+    this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').seek(e.target.timecode)
   }
 
   // LitElement life cycle for when any property changes
