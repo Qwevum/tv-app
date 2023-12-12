@@ -1,4 +1,3 @@
-// import stuff
 import { LitElement, html, css } from 'lit';
 import '@shoelace-style/shoelace/dist/components/dialog/dialog.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
@@ -6,165 +5,202 @@ import "./tv-channel.js";
 import "@lrnwebcomponents/video-player/video-player.js";
 
 export class TvApp extends LitElement {
-  // defaults
-  constructor() {
-    super();
-    this.name = '';
-    this.source = new URL('../assets/channels.json', import.meta.url).href;
-    this.listings = [];
-  }
-  // convention I enjoy using to define the tag's name
   static get tag() {
     return 'tv-app';
   }
-  // LitElement convention so we update render() when values change
+
   static get properties() {
     return {
-      name: { type: String },
+      appName: { type: String },
       source: { type: String },
-      listings: { type: Array },
-      channels: { type: Object },
-      active: {type: String},
+      channelList: { type: Array },
+      activeIndex: { type: Number}
+      
     };
   }
-  // LitElement convention for applying styles JUST to our element
+
+  constructor() {
+    super();
+    this.appName = '';
+    this.source = new URL('../assets/channels.json', import.meta.url).href;
+    this.channelList = [];
+    this.activeIndex = 0;
+
+  }
+
   static get styles() {
     return [
       css`
-      :host {
-        display: grid;
-        margin: 16px;
-        padding: 16px;
-      }
-      .grid-container{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-      }
-      .left-item{
-        grid-column: 1;
-        margin-top: 50px;
-      }
-      .right-item{
-        grid-column: 2;
-        width: 200px;
-        font-size: .94rem;
-        margin-left: 110px;
-        margin-top: 15px;
-        text-align: center;
-        -webkit-overflow-scrolling: touch;
-        overflow-y: auto;
-        padding: 10px;
-        height: 512.41px;
-      }
-      .listing{
-        margin: 5px;
-      }
-      .slideclicker {
-        display: flex;
-        flex-direction: row;
-        text-align: center;
-        gap: 375px;
-        margin-bottom: 20px;
-      }
-      .previous-slide {
-        font-size: 20px;
-        background-color: #eeeeee;
-        width: 200px;
-        height: 50px;
-        padding-top: 22px;
-      }
-      .next-slide {
-        font-size: 20px;
-        background-color: #eeeeee;
-        width: 200px;
-        height: 50px;
-        padding-top: 22px;
+        :host {
+          font-family: 'Arial', sans-serif;
+          display: block;
+          background-color: #f8f8f8;
+          color: #333;
+        }
 
-      }
-    
-      `
+        .app-container {
+          display: grid;
+          grid-template-columns: 2fr 1fr 1fr;
+          gap: 20px;
+          padding: 20px;
+        }
+
+        .video-section {
+          grid-column: 1;
+        }
+
+        .description-box {
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          margin-top: 20px;
+        }
+
+
+        .channel-list {
+          grid-column: 2;
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+          overflow-y: auto; 
+          max-height: 700px;
+        }
+
+        .thumbnail {
+          max-width: 100%;
+          height: auto;
+        }
+
+        .controls {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 20px;
+          padding: 10px 20px;
+          border-radius: 5px;
+        
+        }
+
+        .prev-button,
+        .next-button {
+          font-size: 16px;
+          padding: 10px 20px;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+
+        .prev-button:hover,
+        .next-button:hover {
+          background-color: #0056b3;
+        }
+      `,
     ];
   }
-  // LitElement rendering template of your element
+
   render() {
     return html`
-      <div class="grid-container">
-      <div class="grid-item">
-        <div class="left-item">
-          <video-player source="https://www.youtube.com/watch?v=Vw34wMAqWzc" 
-          accent-color="orange" dark track="https://haxtheweb.org/files/HAXshort.vtt"></video-player> 
+      <div class="app-container">
+        <div class="video-section">
+          
+          
+      <video-player source="https://www.youtube.com/watch?v=djMlDFXQr4w&t=584s" accent-color="blue" dark track="https://haxtheweb.org/files/HAXshort.vtt"></video-player> 
+      <h2>10 Moments Where Antoine Griezmann Shocked the World!</h2>
+      <div class="description-box">
+  
+                ${this.channelList.length > 0 ? this.channelList[this.activeIndex].description : ''}
+      
+        </div>
+      <div class="controls">
+      <button class="prev-button" @click="${this.prevSlide}">Previous</button>
+      <button class="next-button" @click="${this.nextSlide}">Next</button>
+      </div>
         </div>  
-        <tv-channel title="2018 World Cup Top 10 Goals" presenter="">
-          The ten best goals from the 2018 World Cup in Russia
-        </tv-channel>
-      </div>
-      <div class="right-item">
-      <h2>${this.name}</h2>
-      ${
-        this.listings.map(
-          (item) => html`
-            <tv-channel 
-              title="${item.title}"
-              presenter="${item.metadata.author}"
-              @click="${this.itemClick}"
-              class="listing"
-              timecode="${item.metadata.timecode}"
-              slide="${item.metadata.source}"
+        <div class="channel-list">
+          <h2>${this.appName}</h2>
+          ${this.channelList.map(
+            (item, index) => html`
+              <tv-channel 
+                ?active="${index === this.activeIndex}"
+                index="${index}"
+                title="${item.title}"
+                presenter="${item.metadata.author}"
+                @click="${this.itemClick}"
+                timecode="${item.metadata.timecode}"
+                thumbnail="${item.metadata.thumbnail}"
+                minuteTranslation="${item.metadata.minuteTranslation}" 
+         
+              ></tv-channel> 
               
-            >
-            </tv-channel>
-          `
-        )
-      }
+            `
+          )}
+          
+        </div>
       </div>
-        <!-- dialog -->
-        <sl-dialog label="Dialog" class="dialog">
-          Section 
-        <sl-button slot="footer" variant="primary" @click="${this.closeDialog}">Close</sl-button>
-        </sl-dialog>
-    </div>
-    <div class="slideclicker">
-      <div class = "previous-slide"> Previous Slide</div>
-      <div class = "next-slide"> Next Slide</div>
-    </div>
-
+      
     `;
   }
 
-  closeDialog(e) {
-    const dialog = this.shadowRoot.querySelector('.dialog');
-    dialog.hide();
-  }
-
   itemClick(e) {
+    // Handle channel item click
     console.log(e.target);
-    // this will give you the current time so that you can progress what's active based on it playing
-    this.shadowRoot.querySelector('video-player').shadowRoot.querySelector("a11y-media-player").media.currentTime
-    // this forces the video to play
-    this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').play()
-    // this forces the video to jump to this point in the video via SECONDS
-    this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').seek(e.target.timecode)
+    this.activeIndex= e.target.index;
+    
+    this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').play();
+   
   }
 
-  // LitElement life cycle for when any property changes
   updated(changedProperties) {
-    if (super.updated) {
-      super.updated(changedProperties);
-    }
+    super.updated(changedProperties);
     changedProperties.forEach((oldValue, propName) => {
       if (propName === "source" && this[propName]) {
-        this.updateSourceData(this[propName]);
+        this.updateChannelList(this[propName]);
       }
+
+      if(propName === "activeIndex"){
+        console.log(this.shadowRoot.querySelectorAll("tv-channel"));
+        console.log(this.activeIndex)
+
+        var activeChannel = this.shadowRoot.querySelector("tv-channel[index = '" + this.activeIndex + "' ] ");
+       
+        console.log(activeChannel);
+        this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').seek(activeChannel.timecode);
+      }
+      
     });
   }
 
-  async updateSourceData(source) {
+  prevSlide() {
+    this.activeIndex = Math.max(0, this.activeIndex - 1);
+  }
+
+  nextSlide() {
+    this.activeIndex = Math.min(this.channelList.length - 1, this.activeIndex + 1);
+  }
+
+
+  connectedCallback() {
+    super.connectedCallback();
+    
+    setInterval(() => {
+      const currentTime = this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').media.currentTime;
+      if (this.activeIndex + 1 < this.channelList.length &&
+          currentTime >= this.channelList[this.activeIndex + 1].metadata.timecode) {
+        this.activeIndex++;
+      }
+    }, 1000);
+  }
+
+  async updateChannelList(source) {
     await fetch(source).then((resp) => resp.ok ? resp.json() : []).then((responseData) => {
       if (responseData.status === 200 && responseData.data.items && responseData.data.items.length > 0) {
-        this.listings = [...responseData.data.items];
+        this.channelList = [...responseData.data.items];
       }
     });
   }
 }
-// tell the browser about our tag and class it should run when it sees it
+
 customElements.define(TvApp.tag, TvApp);
